@@ -7,15 +7,19 @@ public class Movable : MonoBehaviour {
     // Use this for initialization
     private Transform trans;
     private Vector3 goalPos;
-    private bool moving;
     public bool enableMovementOptions;
     public float moveTime;
     private Transform[] children;
 
+    public bool Selected
+    {
+        get;
+        set;
+    }
 
 	void Start () {
         trans = GetComponent<Transform>();
-        moving = false;
+        goalPos = trans.position;
         children = new Transform[4];
         children[0] = trans.Find("Up_Move");
         children[1] = trans.Find("Down_Move");
@@ -25,34 +29,11 @@ public class Movable : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        if (!moving)
+        if (!Selected)
         {
-            string hitName = "";
-            if (Input.GetMouseButtonDown(0))
+            foreach (Transform child in children)
             {
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit;
-                if (Physics.Raycast(ray, out hit))
-                {
-                    hitName = hit.transform.name;
-                }
-            }
-            
-            if ((Input.GetKeyDown(KeyCode.W) || hitName == "Up_Move") && children[0].gameObject.activeInHierarchy)
-            {
-                moveUp();
-            }
-            else if ((Input.GetKeyDown(KeyCode.S) || hitName == "Down_Move") && children[1].gameObject.activeInHierarchy)
-            {
-                moveDown();
-            }
-            else if ((Input.GetKeyDown(KeyCode.A) || hitName == "Left_Move") && children[2].gameObject.activeInHierarchy)
-            {
-                moveLeft();
-            }
-            else if ((Input.GetKeyDown(KeyCode.D) || hitName == "Right_Move") && children[3].gameObject.activeInHierarchy)
-            {
-                moveRight();
+                child.gameObject.SetActive(false);
             }
         }
         else
@@ -63,7 +44,6 @@ public class Movable : MonoBehaviour {
             }
             if (trans.position == goalPos)
             {
-                moving = false;
                 foreach (Transform child in children)
                 {
                     child.gameObject.SetActive(true);
@@ -84,27 +64,46 @@ public class Movable : MonoBehaviour {
         }
 	}
 
-    void moveUp()
+    public bool moveUp()
     {
-        goalPos = trans.position + new Vector3(0, 0, 1);
-        moving = true;
+        if (children[0].gameObject.activeInHierarchy)
+        {
+            goalPos = trans.position + new Vector3(0, 0, 1);
+            return true;
+        }
+        return false;
+        
     }
 
-    void moveDown()
+    public bool moveDown()
     {
-        goalPos = trans.position + new Vector3(0, 0, -1);
-        moving = true;
+        if (children[1].gameObject.activeInHierarchy)
+        {
+            goalPos = trans.position + new Vector3(0, 0, -1);
+            return true;
+        }
+        return false;
+
     }
 
-    void moveRight()
+    public bool moveRight()
     {
-        goalPos = trans.position + new Vector3(1, 0, 0);
-        moving = true;
+        if (children[3].gameObject.activeInHierarchy)
+        {
+            goalPos = trans.position + new Vector3(1, 0, 0);
+            return true;
+        }
+        return false;
     }
 
-    void moveLeft()
+    public bool moveLeft()
     {
-        goalPos = trans.position + new Vector3(-1, 0, 0);
-        moving = true;
+        if (children[2].gameObject.activeInHierarchy)
+        {
+            goalPos = trans.position + new Vector3(-1, 0, 0);
+            return true;
+        }
+        return false;
     }
+
 }
