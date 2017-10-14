@@ -7,7 +7,8 @@ public class Movable : MonoBehaviour {
     // Use this for initialization
     private Transform trans;
     private Vector3 goalPos;
-    bool moving;
+    private bool moving;
+    public bool enableMovementOptions;
     public float moveTime;
     private Transform[] children;
 
@@ -26,19 +27,30 @@ public class Movable : MonoBehaviour {
     void Update() {
         if (!moving)
         {
-            if (Input.GetKeyDown(KeyCode.W) && children[0].gameObject.activeInHierarchy)
+            string hitName = "";
+            if (Input.GetMouseButtonDown(0))
+            {
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit))
+                {
+                    hitName = hit.transform.name;
+                }
+            }
+            
+            if (Input.GetKeyDown(KeyCode.W) || hitName == "Up_Move" && children[0].gameObject.activeInHierarchy)
             {
                 moveUp();
             }
-            else if (Input.GetKeyDown(KeyCode.S) && children[1].gameObject.activeInHierarchy)
+            else if (Input.GetKeyDown(KeyCode.S) || hitName == "Down_Move" && children[1].gameObject.activeInHierarchy)
             {
                 moveDown();
             }
-            else if (Input.GetKeyDown(KeyCode.A) && children[2].gameObject.activeInHierarchy)
+            else if (Input.GetKeyDown(KeyCode.A) || hitName == "Left_Move" && children[2].gameObject.activeInHierarchy)
             {
                 moveLeft();
             }
-            else if (Input.GetKeyDown(KeyCode.D) && children[3].gameObject.activeInHierarchy)
+            else if (Input.GetKeyDown(KeyCode.D) || hitName == "Right_Move" && children[3].gameObject.activeInHierarchy)
             {
                 moveRight();
             }
