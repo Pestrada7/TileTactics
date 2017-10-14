@@ -38,19 +38,19 @@ public class Movable : MonoBehaviour {
                 }
             }
             
-            if (Input.GetKeyDown(KeyCode.W) || hitName == "Up_Move" && children[0].gameObject.activeInHierarchy)
+            if ((Input.GetKeyDown(KeyCode.W) || hitName == "Up_Move") && children[0].gameObject.activeInHierarchy)
             {
                 moveUp();
             }
-            else if (Input.GetKeyDown(KeyCode.S) || hitName == "Down_Move" && children[1].gameObject.activeInHierarchy)
+            else if ((Input.GetKeyDown(KeyCode.S) || hitName == "Down_Move") && children[1].gameObject.activeInHierarchy)
             {
                 moveDown();
             }
-            else if (Input.GetKeyDown(KeyCode.A) || hitName == "Left_Move" && children[2].gameObject.activeInHierarchy)
+            else if ((Input.GetKeyDown(KeyCode.A) || hitName == "Left_Move") && children[2].gameObject.activeInHierarchy)
             {
                 moveLeft();
             }
-            else if (Input.GetKeyDown(KeyCode.D) || hitName == "Right_Move" && children[3].gameObject.activeInHierarchy)
+            else if ((Input.GetKeyDown(KeyCode.D) || hitName == "Right_Move") && children[3].gameObject.activeInHierarchy)
             {
                 moveRight();
             }
