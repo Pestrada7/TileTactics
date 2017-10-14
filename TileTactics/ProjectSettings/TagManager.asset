@@ -3,7 +3,19 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - SwordPlayer
+  - LancePlayer
+  - BowPlayer
+  - Slime-Red
+  - Slime-Green
+  - Slime-Blue
+  - Bat-Red
+  - Bat-Blue
+  - Bat-Green
+  - Skeleton-Red
+  - Skeleton-Green
+  - Skeleton-Blue
   layers:
   - Default
   - TransparentFX
