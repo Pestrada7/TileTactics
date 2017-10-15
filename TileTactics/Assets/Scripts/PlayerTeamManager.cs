@@ -9,6 +9,7 @@ public class PlayerTeamManager : MonoBehaviour {
     private GameObject[] team;
     private Movable moveSelected;
     private int wait;
+    private bool selectMember = true;
     public Material attackTile;
     public Material moveTile;
     public Material dodgeTile;
@@ -49,6 +50,7 @@ public class PlayerTeamManager : MonoBehaviour {
         if (wait == 0)
         {
             string hitName = "";
+            selectMember = true;
 
             if (Input.GetKeyDown(KeyCode.Return)) {
                 this.ActionAccessor = CharAction.ATTACKING;
@@ -127,17 +129,40 @@ public class PlayerTeamManager : MonoBehaviour {
 
                 }
             }
+
+            if (selectMember && Input.GetKeyDown(KeyCode.Alpha1)) {
+                selected = nextSelectedMember(1);
+            } else if (selectMember && Input.GetKeyDown(KeyCode.Alpha2)) {
+                selected = nextSelectedMember(2);
+            } else if (selectMember && Input.GetKeyDown(KeyCode.Alpha3)) {
+                selected = nextSelectedMember(3);
+            } else if (selectMember && Input.GetKeyDown(KeyCode.Alpha4)) {
+                selected = nextSelectedMember(4);
+            }
         }
         else
         {
             wait--;
-            if (wait == 1)
+            selectMember = false;
+            if (wait == 0)
             {
                 moveSelected.Selected = false;
-                selected = nextMember();
+                selectMember = true;
+                //selected = nextMember();
             }
         }
 
+        /*if (selectMember && Input.GetKeyDown(KeyCode.Alpha1)) {
+            selected = nextSelectedMember(1);
+        } else if (selectMember && Input.GetKeyDown(KeyCode.Alpha2)) {
+            selected = nextSelectedMember(2);
+        } else if (selectMember && Input.GetKeyDown(KeyCode.Alpha3)) {
+            selected = nextSelectedMember(3);
+        } else if (selectMember && Input.GetKeyDown(KeyCode.Alpha4)) {
+            selected = nextSelectedMember(4);
+        }*/
+
+        Debug.Log("SelectMember: " + selectMember + " Wait: " + wait);
     }
 
     GameObject nextMember()
@@ -153,5 +178,13 @@ public class PlayerTeamManager : MonoBehaviour {
         moveSelected.Selected = true;
 
         return team[member];
+    }
+
+    GameObject nextSelectedMember(int member) {
+        moveSelected.Selected = false;
+        moveSelected = team[member - 1].GetComponent<Movable>();
+        moveSelected.Selected = true;
+        selectMember = true;
+        return team[member - 1];
     }
 }
