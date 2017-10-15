@@ -9,6 +9,7 @@ public class Movable : MonoBehaviour {
     private Vector3 goalPos;
     public bool enableMovementOptions;
     public float moveTime;
+    private bool moving;
     private Transform[] children;
 
     public bool Selected
@@ -18,6 +19,7 @@ public class Movable : MonoBehaviour {
     }
 
 	void Start () {
+        moving = false;
         trans = GetComponent<Transform>();
         goalPos = trans.position;
         children = new Transform[4];
@@ -35,8 +37,22 @@ public class Movable : MonoBehaviour {
             {
                 child.gameObject.SetActive(false);
             }
+        } else
+        {
+            foreach (Transform child in children)
+            {
+                child.gameObject.SetActive(true);
+            }
+            if (trans.position.z > 2.5)
+                children[0].gameObject.SetActive(false);
+            else if (trans.position.z < -2.5)
+                children[1].gameObject.SetActive(false);
+            if (trans.position.x < -2.5)
+                children[2].gameObject.SetActive(false);
+            else if (trans.position.x > 2.5)
+                children[3].gameObject.SetActive(false);
         }
-        else
+        if (moving)
         {
             foreach (Transform child in children)
             {
@@ -44,18 +60,7 @@ public class Movable : MonoBehaviour {
             }
             if (trans.position == goalPos)
             {
-                foreach (Transform child in children)
-                {
-                    child.gameObject.SetActive(true);
-                }
-                if (trans.position.z > 2.5)
-                    children[0].gameObject.SetActive(false);
-                else if (trans.position.z < -2.5)
-                    children[1].gameObject.SetActive(false);
-                if (trans.position.x < -2.5)
-                    children[2].gameObject.SetActive(false);
-                else if (trans.position.x > 2.5)
-                    children[3].gameObject.SetActive(false);
+                moving = false;
             }
             else
             {
@@ -69,6 +74,7 @@ public class Movable : MonoBehaviour {
         if (children[0].gameObject.activeInHierarchy)
         {
             goalPos = trans.position + new Vector3(0, 0, 1);
+            moving = true;
             return true;
         }
         return false;
@@ -80,6 +86,7 @@ public class Movable : MonoBehaviour {
         if (children[1].gameObject.activeInHierarchy)
         {
             goalPos = trans.position + new Vector3(0, 0, -1);
+            moving = true;
             return true;
         }
         return false;
@@ -91,6 +98,7 @@ public class Movable : MonoBehaviour {
         if (children[3].gameObject.activeInHierarchy)
         {
             goalPos = trans.position + new Vector3(1, 0, 0);
+            moving = true;
             return true;
         }
         return false;
@@ -101,6 +109,7 @@ public class Movable : MonoBehaviour {
         if (children[2].gameObject.activeInHierarchy)
         {
             goalPos = trans.position + new Vector3(-1, 0, 0);
+            moving = true;
             return true;
         }
         return false;
